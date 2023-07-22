@@ -1,0 +1,171 @@
+﻿@using IdentityServer4.Models;
+@using AuthService.Models;
+@model ClientViewModel;
+@{
+    ViewData["Title"] = "Register Client";
+}
+
+
+<div class="container shadow p-5">
+    <div class="row pb-2">
+        <h2>Register Client</h2>
+    </div>
+
+    @foreach (var item in ViewContext.ViewData.ModelState)
+    {
+        if (item.Value.Errors.Any())
+        {
+            <div class="alert alert-danger" role="alert">
+                @(string.Join("; ", item.Value.Errors.Select(x => x.ErrorMessage)))
+            </div>
+        }
+    }
+
+    <form method="post">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="ClientName">Client Name</label>
+                <input type="text" class="form-control mb-3" asp-for="ClientName" placeholder="Enter Client Name">
+                <span asp-validation-for="ClientName" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="ClientSecrets">Secrets Key</label>
+                <input type="text" class="form-control mb-3" asp-for="ClientSecrets" placeholder="Enter Secrets Key">
+                <span asp-validation-for="ClientSecrets" class=" alert-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="AllowedGrantTypes">Grant Types</label>
+                @Html.DropDownListFor(m => m.AllowedGrantTypes, new List<SelectListItem>
+                {
+                new SelectListItem
+                {
+                Text = "Implicit",
+                Value = string.Join(" ", GrantTypes.Implicit)
+                },
+                new SelectListItem
+                {
+                Text = "Implicit And Client Credentials",
+                Value = string.Join(" ", GrantTypes.ImplicitAndClientCredentials)
+                },
+                new SelectListItem
+                {
+                Text = "Code",
+                Value = string.Join(" ", GrantTypes.Code)
+                },
+                new SelectListItem
+                {
+                Text = "Code And Client Credentials",
+                Value = string.Join(" ", GrantTypes.CodeAndClientCredentials)
+                },
+                new SelectListItem
+                {
+                Text = "Hybrid",
+                Value = string.Join(" ", GrantTypes.Hybrid)
+                },
+                new SelectListItem
+                {
+                Text = "Hybrid And Client Credentials",
+                Value = string.Join(" ", GrantTypes.HybridAndClientCredentials)
+                },
+                new SelectListItem
+                {
+                Text = "Client Credentials",
+                Value = string.Join(" ", GrantTypes.ClientCredentials)
+                },
+                new SelectListItem
+                {
+                Text = "Resource Owner Passwords",
+                Value = string.Join(" ", GrantTypes.ResourceOwnerPassword)
+                },
+                new SelectListItem
+                {
+                Text = "Resource Owner Password And Client Credentials",
+                Value = string.Join(" ", GrantTypes.ResourceOwnerPasswordAndClientCredentials)
+                },
+                new SelectListItem
+                {
+                Text = "Device Flow",
+                Value = string.Join(" ", GrantTypes.DeviceFlow)
+                }
+                }, "Please select", new { @class = "form-control mb-3"})
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="RedirectUris">Redirect Uris</label>
+                <input type="text" class="form-control mb-3" asp-for="RedirectUris" placeholder="Enter Redirect Uris">
+                <span asp-validation-for="RedirectUris" class=" alert-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="PostLogoutRedirectUris">Logout Redirect Uris</label>
+                <input type="text" class="form-control mb-3" asp-for="PostLogoutRedirectUris" placeholder="Enter Logout Redirect Uris">
+                <span asp-validation-for="PostLogoutRedirectUris" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="AllowedCorsOrigins">Cors Origins</label>
+                <input type="text" class="form-control mb-3" asp-for="AllowedCorsOrigins" placeholder="Enter Cors Origins">
+                <span asp-validation-for="AllowedCorsOrigins" class=" alert-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="AllowedScopes">Scopes</label>
+                <input type="text" class="form-control mb-3" asp-for="AllowedScopes" placeholder="Enter Scopes">
+                <span asp-validation-for="AllowedScopes" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="AccessTokenLifetime">Token Lifetime</label>
+                <input type="number" class="form-control mb-3" asp-for="AccessTokenLifetime" placeholder="Enter Token Lifetime">
+                <span asp-validation-for="AccessTokenLifetime" class=" alert-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <div class="checkbox">
+                    <label asp-for="RequireClientSecret">
+                        <input asp-for="RequireClientSecret" /> Require Client Secret
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <div class="checkbox">
+                    <label asp-for="RequirePkce">
+                        <input asp-for="RequirePkce" /> Require Pkce
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <div class="checkbox">
+                    <label asp-for="AllowRememberConsent">
+                        <input asp-for="AllowRememberConsent" /> Allow Remember Consent
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <div class="checkbox">
+                    <label asp-for="AllowOfflineAccess">
+                        <input asp-for="AllowOfflineAccess" /> Allow Offline Access
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <div class="checkbox">
+                    <label asp-for="AllowAccessTokensViaBrowser">
+                        <input asp-for="AllowAccessTokensViaBrowser" /> Allow Access Tokens Via Browser
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+        <button type="submit" class="btn btn-lg btn-primary p-2"><i class="bi bi-file-plus-fill"></i>Save</button>
+        <a asp-controller="client" asp-action="index" class="btn btn-lg btn-warning p-2">Back To List</a>
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
